@@ -15,16 +15,7 @@
   color: #1abc9c !important;
 }
 
-.compose-box {
-  min-width: 500px;
-  align-items: center;
-}
 
-button {
-  background-color: blue;
-  border-radius: 3px;
-  color: white;
-}
 
 .footer-padding {
 padding-bottom: 60px;
