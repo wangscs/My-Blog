@@ -19,8 +19,8 @@ app.use(express.static("public"));
 
 // Array of posts objects
 let posts = [
-  { title: 'Day 1', content: 'asdasd' },
-  { title: 'Another Post', content: 'asdpokapf' }
+  { title: 'Day 1', content: '1Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+  { title: 'Another Post', content: '2Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }
 ];
 
 app.get("/", function(req,res){
@@ -30,14 +30,22 @@ app.get("/", function(req,res){
   });
 });
 
-app.get("/posts/:test", function(req, res){
+/** get the post request and obtain the requested title.
+ * compare it with the stored title and if it is correct
+ * redirect it to a post.ejs containing the contents and titles
+ * passed through here to there.
+ */
+app.get("/post/:test", function(req, res){
     const requestedTitle = _.lowerCase(req.params.test);
     
   posts.forEach(function(post){
     const storedTitle = _.lowerCase(post.title);
 
     if(requestedTitle === storedTitle){
-      console.log("match found");
+      res.render("post", {
+        title: post.title,
+        content: post.content,
+      })
     } else {
       console.log("not found");
     }
