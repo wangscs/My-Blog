@@ -15,7 +15,10 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
+const aboutContent = "Hello! my name is Steven Wang and I am an aspiring software engineer."
+  + "I've recently graduated from Florida International University with a bachelors in Computer Science with a specialized track in Software Design and Development."
+  + "This means that I have taken extra courses in software engineering and testing principles than the average computer science student from my school."
+  + "This web app was created by me as a practice/learning tool so that I can familiarize myself with the usage of ejs, routing, and using a mongo database.";
 const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
 
 const postSchema = {
@@ -53,6 +56,11 @@ app.get("/compose", function(req,res){
   res.render("compose");
 });
 
+/**
+ * Post route that activates when user submits the compose form
+ * Title and content from the UI are gathered to be saved to DB
+ * and redirect user back to the home page when post is saved.
+ */
 app.post("/", function(req,res){
   let postTitle = req.body.composedTitle;
   let postContent = req.body.postText;
@@ -78,23 +86,27 @@ app.post("/", function(req,res){
  * passed through here to there.
  */
 app.get("/post/:postID", function(req, res){
-  const requestedTitle = _.lowerCase(req.params.postID);
+  const requestedPostID = req.params.postID;
 
-  //arrpost was deleted
-  arrPosts.forEach(function(post){
-    const storedTitle = _.lowerCase(post.title);
-
-    if(requestedTitle === storedTitle){
-      res.render("post", {
-        title: post.title,
-        content: post.content,
-      })
+  Post.findOne({_id: requestedPostID}, function(err, foundPost){
+    if(!err){
+      if(!foundPost){
+        console.log("Post not found");
+      } else {
+        res.render("post", {
+          title: foundPost.title,
+          content: foundPost.content,
+        })
+      }
     } else {
-      console.log("not found");
+      console.log(err);
     }
   });
 });
 
+/**
+ * Listen on localhost 3000
+ */
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
