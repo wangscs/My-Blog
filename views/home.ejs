@@ -6,15 +6,11 @@
   <% posts.forEach(function(post){ %>
     <% if(post.content.length > 100){ %>
       <% let truncatedContent = post.content.substring(0,100); %>
-      <h1><%= post.title %></h1>
+      <h1><a href="/post/<%= post.title %>"><%= post.title %></a></h1>
       <p><%= post.content.substring(0,100) %> ...</p>
-      <a href="/post/<%= post.title %>">Read More</a>
     <% } else { %>
-      <h1><%= post.title %></h1>
+      <h1><a href="/post/<%= post.title %>"><%= post.title %></a></h1>
       <p><%= post.content %></p>
   <% }}) %>
 </div>
-
-
-
 <%- include("partials/footer") -%>

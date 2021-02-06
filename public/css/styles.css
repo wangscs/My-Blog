@@ -15,7 +15,14 @@
   color: #1abc9c !important;
 }
 
+a:link {
+  color: black;
+  text-decoration: none;
+}
 
+a:visited {
+  color: black;
+}
 
 .footer-padding {
 padding-bottom: 60px;
