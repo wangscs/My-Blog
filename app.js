@@ -25,24 +25,6 @@ const postSchema = {
 
 const Post = mongoose.model("post", postSchema);
 
-const post1 = new Post ({
-  title: 'Day 1', 
-  content: '1Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-});
-
-const post2 = new Post ({
-  title: 'Day 2', 
-  content: '2Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-});
-
-const post3 = new Post ({
-  title: 'Day 3', 
-  content: '3Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-});
-
-// Array of posts objects
-let arrPosts = [post1,post2,post3];
-
 app.get("/", function(req,res){
   Post.find({}, function(err, foundPosts){
     if(err){
@@ -80,10 +62,14 @@ app.post("/", function(req,res){
     content: postContent,
   });
   
-  post.save();
-  res.redirect("/");
+  post.save(function(err){
+    if(!err){
+      res.redirect("/");
+    } else {
+      console.log(err);
+    }
+  });
 });
-
 
 /** 
  * Get the post request and obtain the requested title.
@@ -93,7 +79,8 @@ app.post("/", function(req,res){
  */
 app.get("/post/:postID", function(req, res){
   const requestedTitle = _.lowerCase(req.params.postID);
-  
+
+  //arrpost was deleted
   arrPosts.forEach(function(post){
     const storedTitle = _.lowerCase(post.title);
 
